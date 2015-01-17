@@ -1,0 +1,7 @@
+# Ignore all compiled files.
+out
+
+# Ignore user-specific IntelliJ IDEA files.
+.idea/workspace.xml
+.idea/tasks.xml
+
