@@ -21,7 +21,7 @@ public class World {
     /**
      * Length of the crane's track in arbitrary units.
      */
-    public final int TRACK_LENGTH = 1000;
+    public final int TRACK_LENGTH = 100;
 
     /**
      * Holds current physical quantities associated with the crane.
@@ -85,7 +85,7 @@ public class World {
     synchronized
     public void update(final CraneState newCraneState) {
         assert(newCraneState.position >= 0);
-        assert(newCraneState.angle > -Math.PI/2.0 && newCraneState.angle < Math.PI/2.0);
+        assert(newCraneState.angle >= -Math.PI/2.0 && newCraneState.angle <= Math.PI/2.0);
 
         craneState = newCraneState;
     }
