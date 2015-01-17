@@ -77,13 +77,6 @@ public class World {
     public void refresh() {
         Physics.update(this);
         Regulator.update(this);
-
-        try {
-            Thread.sleep(TIME_QUANTUM);
-        }
-        catch (InterruptedException _) {
-            return;
-        }
     }
 
     /**
