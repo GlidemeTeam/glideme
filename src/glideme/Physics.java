@@ -10,6 +10,17 @@ public class Physics {
      * @param world - the world that's being updated.
      */
     public static void update(World world) {
-        //TODO: @psuchorab, it's your job ;).
+        
+        World.CraneState state = world.getCraneState();
+
+        double newPosition = state.position + state.velocity * world.TIME_QUANTUM;
+
+        double tangensAlpha = (state.velocity - state.prevVelocity) / world.TIME_QUANTUM / 9.81;
+
+        double newAngle = Math.tan(tangensAlpha);
+
+
+        world.update(newPosition, null, newAngle);
+        
     }
 }
