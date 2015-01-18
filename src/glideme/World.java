@@ -39,6 +39,11 @@ public class World {
         public double velocity;
 
         /**
+         * Crane's previous (in previous TIME_QUANTUM) velocity in units/sec.
+         */
+        public double prevVelocity;
+
+        /**
          * Crane's offset from its balance point (perpendicular to the floor) in radians.
          * Negative values mean that the crane leans in the direction opposite to the velocity.
          */
@@ -51,10 +56,11 @@ public class World {
          * @param velocity - the starting velocity
          * @param angle - the starting angle
          */
-        public CraneState(final int position, final double velocity, final double angle)
+        public CraneState(final int position, final double velocity, final double prevVelocity, final double angle)
         {
             this.position = position;
             this.velocity = velocity;
+            this.prevVelocity = prevVelocity;
             this.angle = angle;
         }
     }
@@ -63,7 +69,7 @@ public class World {
      * Current state of the crane.
      * The crane always starts at position 0, still, in balance.
      */
-    private CraneState craneState = new CraneState(0, 0.0, 0.0);
+    private CraneState craneState = new CraneState(0, 0.0, 0.0, 0.0);
 
     /**
      * Crane's destination point (as a distance in units from the track's start).
@@ -96,6 +102,10 @@ public class World {
      */
     synchronized
     public void update(Integer newPosition, Double newVelocity, Double newAngle) {
+        // If velocity is being updated, store the previous velocity.
+        // Otherwise don't change any of the two velocity values.
+        final Double newPrevVelocity = newVelocity == null? craneState.prevVelocity : craneState.velocity;
+
         if (newPosition == null)
         {
             newPosition = craneState.position;
@@ -111,7 +121,8 @@ public class World {
             newAngle = craneState.angle;
         }
 
-        update(new CraneState(newPosition, newVelocity, newAngle));
+        final CraneState newState = new CraneState(newPosition, newVelocity, newPrevVelocity, newAngle);
+        update(newState);
     }
 
     /**
