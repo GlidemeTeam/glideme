@@ -1,7 +1,5 @@
 package glideme.fuzzy;
 
-import java.lang.reflect.Member;
-
 /**
  * Represents a fuzzy set and implements basic fuzzy set operations.
  *
