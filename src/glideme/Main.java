@@ -1,17 +1,21 @@
 package glideme;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Main extends Application {
     /**
      * The state of the world.
      */
     private static World world = new World();
-
+    private static MainWindow mainWindow = new MainWindow();;
     /**
      * World-updating background task.
      */
@@ -36,6 +40,7 @@ public class Main extends Application {
                 }
             }
         });
+
         worldThread.setDaemon(true);
         worldThread.start();
     }
@@ -48,10 +53,22 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+
+        mainWindow = new MainWindow(world);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainWindow.fxml"));
+
+        fxmlLoader.setRoot(mainWindow);
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
+        primaryStage.setScene(new Scene(mainWindow));
         primaryStage.setTitle("GlideMe");
-        primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
+
+
     }
 
     /**
@@ -61,6 +78,9 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         spawnWorldLoop();
+
         launch(args);
+      //  Platform.runLater(()->mainWindow.drawWindow(world));
+
     }
 }

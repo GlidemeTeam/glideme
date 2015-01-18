@@ -21,7 +21,7 @@ public class World {
     /**
      * Length of the crane's track in arbitrary units.
      */
-    public final int TRACK_LENGTH = 100;
+    public static final int TRACK_LENGTH = 100;
 
     /**
      * Holds current physical quantities associated with the crane.
