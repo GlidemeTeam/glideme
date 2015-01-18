@@ -70,14 +70,14 @@ public class Regulator {
     }
 
     /**
-     * Return degrees of membership to each of the given fuzzy sets.
+     * Return degrees of membership of each of the given fuzzy sets.
      *
      * @param value - the value to check membership for.
      * @param firstSet - the first fuzzy set to check against (obligatory).
      * @param otherSets - any other fuzzy sets to check (optional).
      *
-     * @return - an array of doubles between 0.0 and 1.0 determining the degrees of membership to the given set
-     * (in order of occurence).
+     * @return - an array of doubles between 0.0 and 1.0 determining the degrees of membership of the given set
+     * (in order of occurrence).
      */
     private static double[] fuzzify(final double value, final FuzzySet firstSet, final FuzzySet... otherSets) {
         double[] mship = new double[1 + otherSets.length];

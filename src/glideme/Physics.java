@@ -5,7 +5,7 @@ package glideme;
  */
 public class Physics {
     /**
-     * Determine and set updated values of crane's position, velocity and angle.
+     * Determine and set updated values of crane's position and angle.
      *
      * @param world - the world that's being updated.
      */
