@@ -31,7 +31,7 @@ public class World {
         /**
          * Crane's position on the track as a distance from its start (in units).
          */
-        public int position;
+        public double position;
 
         /**
          * Crane's velocity in units/sec. Negative values mean motion towards the beginning of the track.
@@ -56,7 +56,7 @@ public class World {
          * @param velocity - the starting velocity
          * @param angle - the starting angle
          */
-        public CraneState(final int position, final double velocity, final double prevVelocity, final double angle)
+        public CraneState(final double position, final double velocity, final double prevVelocity, final double angle)
         {
             this.position = position;
             this.velocity = velocity;
@@ -75,12 +75,13 @@ public class World {
      * Crane's destination point (as a distance in units from the track's start).
      * At the beginning it's always where the crane starts.
      */
-    private int destPoint = craneState.position;
+    private int destPoint = 70;
 
     /**
      * Determine updated values of physical quantities for current time quantum.
      */
     public void refresh() {
+        System.out.printf("d=%f, v=%f, pv=%f, a=%f\n", craneState.position, craneState.velocity, craneState.prevVelocity, craneState.angle);
         Physics.update(this);
         Regulator.update(this);
     }
@@ -101,7 +102,7 @@ public class World {
      * To avoid changing some of these quantities, pass null instead of a new value.
      */
     synchronized
-    public void update(Integer newPosition, Double newVelocity, Double newAngle) {
+    public void update(Double newPosition, Double newVelocity, Double newAngle) {
         // If velocity is being updated, store the previous velocity.
         // Otherwise don't change any of the two velocity values.
         final Double newPrevVelocity = newVelocity == null? craneState.prevVelocity : craneState.velocity;
