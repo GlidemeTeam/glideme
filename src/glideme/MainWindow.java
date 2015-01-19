@@ -65,9 +65,11 @@ public class MainWindow extends VBox implements Initializable {
                         while(true) {
                           //  System.out.println(task.isCancelled());
                             if (!task.isCancelled()) {
-                                Platform.runLater(() ->
-                                                drawWindow()
-                                );
+                                Platform.runLater(new Runnable() {
+                                    public void run() {
+                                        drawWindow();
+                                    }
+                                });
                                 try {
                                     Thread.sleep(world.TIME_QUANTUM);
                                 }
