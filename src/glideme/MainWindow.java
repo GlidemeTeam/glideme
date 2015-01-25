@@ -36,15 +36,9 @@ public class MainWindow extends VBox implements Initializable {
     private Circle weight;
 
     @FXML
-    private Button bStart;
-
-    @FXML
-    private Button bStop;
-
-    @FXML
     private Pane pane;
 
-    private Task task;
+    private Task task=null;
 
     private double lineLenght;
     private double railLength;
@@ -59,62 +53,50 @@ public class MainWindow extends VBox implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        bStart.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                 task = new Task() {
-                    @Override
-                    protected Object call() throws Exception {
-                        Main.runWorld(true);
-
-                        while(true) {
-                          //  System.out.println(task.isCancelled());
-                            if (!task.isCancelled()) {
-                                Platform.runLater(new Runnable() {
-                                    public void run() {
-                                        drawWindow();
-                                    }
-                                });
-                                try {
-                                    Thread.sleep(world.TIME_QUANTUM);
-                                }
-                                catch (InterruptedException _) {
-                                    return null;
-                                }
-                            }
-                            else
-                                return null;
-                        }
-                    }
-                };
-
-                Thread th = new Thread(task);
-                th.setDaemon(true);
-                th.start();
-            }
-        });
-
-        bStop.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Main.runWorld(false);
-                task.cancel();
-            }
-        });
-
         lineLenght = Math.abs(rope.getStartY()) + Math.abs(rope.getEndY());
         railLength = rail.getEndX() - rail.getStartX();
 
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(task != null && !task.isCancelled()) {
+                if(task==null)
+                {
+                    task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            Main.runWorld(true);
+
+                            while (true) {
+                                //  System.out.println(task.isCancelled());
+                                if (!task.isCancelled()) {
+                                    Platform.runLater(new Runnable() {
+                                        public void run() {
+                                            drawWindow();
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(world.TIME_QUANTUM);
+                                    } catch (InterruptedException _) {
+                                        return null;
+                                    }
+                                } else
+                                    return null;
+                            }
+                        }
+                    };
+
+                    Thread th = new Thread(task);
+                    th.setDaemon(true);
+                    th.start();
+                }
+
+                if (task != null && !task.isCancelled()) {
                     double x = event.getSceneX();
                     if (x > railLength) {
                         x = railLength;
                     }
 
-                    world.setDestination((x/railLength) * (double)World.TRACK_LENGTH);
+                    world.setDestination((x / railLength) * (double) World.TRACK_LENGTH);
                 }
             }
         });

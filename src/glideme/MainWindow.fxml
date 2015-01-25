@@ -1,16 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.GridPane?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
-
 <?import javafx.scene.layout.Pane?>
-
 <?import javafx.scene.control.ToolBar?>
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="glideme.MainWindow">
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="glideme.MainWindow">
     <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
         <children>
             <Rectangle fx:id="trolley" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="264.0" layoutY="74.0" stroke="BLACK" strokeType="INSIDE" width="71.0" />
@@ -18,12 +20,6 @@
             <Line fx:id="rail" endX="290.0" layoutX="300.0" layoutY="102.0" startX="-290.0" />
             <Line fx:id="rope" endY="200.0" layoutX="300.0" layoutY="102.0" startY="0.0" />
             <Circle fx:id="weight" fill="DODGERBLUE" layoutX="301.0" layoutY="301.0" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
-            <ToolBar>
-                <items>
-                    <Button fx:id="bStart" mnemonicParsing="false" prefHeight="38.0" prefWidth="105.0" text="Start" />
-                    <Button fx:id="bStop" mnemonicParsing="false" prefHeight="38.0" prefWidth="105.0" text="Stop" />
-                </items>
-            </ToolBar>
         </children>
     </Pane>
 </fx:root>
