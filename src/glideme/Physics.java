@@ -10,6 +10,11 @@ public class Physics {
     private static double prevAcceleration = 0.0;
 
     /**
+     * Gravitational acceleration (corrected to work with our custom distance units).
+     */
+    private static final double GRAVITY = 9.81/1000.0/12.0;
+
+    /**
      * Determine and set updated values of crane's position and angle.
      *
      * @param world - the world that's being updated.
@@ -30,8 +35,9 @@ public class Physics {
         }
 
         // Calculate current angle change - it depends on acceleration.
-        final double tangensAlpha = (prevAcceleration - state.acceleration) / (9.81/6000.0);
-        final double newAngle = state.angle + Math.atan(tangensAlpha);
+        final double deltaAcc = prevAcceleration - state.acceleration;
+        final double tanDeltaAlpha = deltaAcc / GRAVITY;
+        final double newAngle = state.angle + Math.atan(tanDeltaAlpha);
 
         world.update(newPosition, newVelocity, null, newAngle);
 

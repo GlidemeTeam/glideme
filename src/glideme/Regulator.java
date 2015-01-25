@@ -17,12 +17,12 @@ public class Regulator {
     private static final FuzzySet DN = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -100.0, -25.0, 0.0),
         DZ = new FuzzySet(FuzzySet.MembershipType.Pyramidal, -25.0, 0.0, 25.0),
         DP = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, 25.0, 100.0),
-        AN = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -Math.PI/2.0, -Math.PI/12.0, 0.0),
-        AZ = new FuzzySet(FuzzySet.MembershipType.Pyramidal, -Math.PI/12.0, 0.0, Math.PI/12.0),
-        AP = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, Math.PI/12.0, Math.PI/2.0),
-        VP = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -1.0/6.0, -0.5/6.0, 0.0),
+        AN = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -Math.PI/2.0, -Math.PI/6.0, 0.0),
+        AZ = new FuzzySet(FuzzySet.MembershipType.Pyramidal, -Math.PI/6.0, 0.0, Math.PI/6.0),
+        AP = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, Math.PI/6.0, Math.PI/2.0),
+        VN = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, 0.5/6.0, 1.0/6.0),
         VZ = new FuzzySet(FuzzySet.MembershipType.Pyramidal, -0.5/6.0, 0.0, 0.5/6.0),
-        VN = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, 0.5/6.0, 1.0/6.0);
+        VP = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -1.0/6.0, -0.5/6.0, 0.0);
 
     /**
      * Minimal acceleration time modifier in milliseconds.
