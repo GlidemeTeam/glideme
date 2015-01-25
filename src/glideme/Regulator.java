@@ -25,6 +25,11 @@ public class Regulator {
         VP = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, 0.5/6000.0, 1.0/6000.0);
 
     /**
+     * Minimal acceleration time modifier in milliseconds.
+     */
+    private static final double MIN_ACCEL_TIME = 50.0;
+
+    /**
      * Calculate the maximum among the given values.
      * (Created to compensate for Java Math's own max taking only two arguments...).
      *
@@ -161,8 +166,11 @@ public class Regulator {
         double[] velMship = reason(distMship, angleMship);
 
         // Defuzzification:
-        double newVelocity = defuzzify(velMship);
+        double destVelocity = defuzzify(velMship);
 
-        world.update(null, newVelocity, null);
+        // We cannot affect velocity directly, we only control acceleration.
+        double newAccelleration = (destVelocity - inputState.velocity)/MIN_ACCEL_TIME;
+
+        world.update(null, null, newAccelleration, null);
     }
 }

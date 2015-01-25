@@ -34,14 +34,14 @@ public class World {
         public double position;
 
         /**
-         * Crane's velocity in units/sec. Negative values mean motion towards the beginning of the track.
+         * Crane's velocity in units/msec. Negative values mean motion towards the beginning of the track.
          */
         public double velocity;
 
         /**
-         * Crane's previous (in previous TIME_QUANTUM) velocity in units/sec.
+         * Crane's acceleration in units/msec^2.
          */
-        public double prevVelocity;
+        public double acceleration;
 
         /**
          * Crane's offset from its balance point (perpendicular to the floor) in radians.
@@ -56,20 +56,20 @@ public class World {
          * @param velocity - the starting velocity
          * @param angle - the starting angle
          */
-        public CraneState(final double position, final double velocity, final double prevVelocity, final double angle)
+        public CraneState(final double position, final double velocity, final double acceleration, final double angle)
         {
             this.position = position;
             this.velocity = velocity;
-            this.prevVelocity = prevVelocity;
+            this.acceleration = acceleration;
             this.angle = angle;
         }
     }
 
     /**
      * Current state of the crane.
-     * The crane always starts at position 0, still, in balance.
+     * The crane always starts at position 50, still, in balance.
      */
-    private CraneState craneState = new CraneState(0, 0.0, 0.0, 0.0);
+    private CraneState craneState = new CraneState(50.0, 0.0, 0.0, 0.0);
 
     /**
      * Crane's destination point (as a distance in units from the track's start).
@@ -81,7 +81,8 @@ public class World {
      * Determine updated values of physical quantities for current time quantum.
      */
     public void refresh() {
-        System.out.printf("d=%f, v=%f, pv=%f, a=%f\n", craneState.position, craneState.velocity, craneState.prevVelocity, craneState.angle);
+        System.out.printf("d=%f, v=%f, acc=%f, a=%f\n", craneState.position, craneState.velocity, craneState.acceleration, craneState.angle);
+
         Physics.update(this);
         Regulator.update(this);
     }
@@ -102,10 +103,9 @@ public class World {
      * To avoid changing some of these quantities, pass null instead of a new value.
      */
     synchronized
-    public void update(Double newPosition, Double newVelocity, Double newAngle) {
-        // If velocity is being updated, store the previous velocity.
-        // Otherwise don't change any of the two velocity values.
-        final Double newPrevVelocity = newVelocity == null? craneState.prevVelocity : craneState.velocity;
+    public void update(Double newPosition, Double newVelocity, Double newAcceleration, Double newAngle) {
+        // If velocity is being updated, store a new acceleration value.
+        // Otherwise don't change it.
 
         if (newPosition == null)
         {
@@ -117,12 +117,17 @@ public class World {
             newVelocity = craneState.velocity;
         }
 
+        if (newAcceleration == null)
+        {
+            newAcceleration = craneState.acceleration;
+        }
+
         if (newAngle == null)
         {
             newAngle = craneState.angle;
         }
 
-        final CraneState newState = new CraneState(newPosition, newVelocity, newPrevVelocity, newAngle);
+        final CraneState newState = new CraneState(newPosition, newVelocity, newAcceleration, newAngle);
         update(newState);
     }
 

@@ -1,5 +1,6 @@
 package glideme;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -21,8 +22,8 @@ import java.util.EventListener;
 import java.util.ResourceBundle;
 
 public class MainWindow extends VBox implements Initializable {
-
     private static World world;
+
     @FXML
     private Rectangle trolley;
     @FXML
@@ -47,12 +48,13 @@ public class MainWindow extends VBox implements Initializable {
 
     private int lineLenght;
 
-    public MainWindow(){
-    };
+    public MainWindow() {}
 
-    public MainWindow(World world){
+    public MainWindow(World world)
+    {
         this.world = world;
-    };
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -62,6 +64,8 @@ public class MainWindow extends VBox implements Initializable {
                  task = new Task() {
                     @Override
                     protected Object call() throws Exception {
+                        Main.runWorld(true);
+
                         while(true) {
                           //  System.out.println(task.isCancelled());
                             if (!task.isCancelled()) {
@@ -92,6 +96,7 @@ public class MainWindow extends VBox implements Initializable {
         bStop.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                Main.runWorld(false);
                 task.cancel();
             }
         });
@@ -117,10 +122,7 @@ public class MainWindow extends VBox implements Initializable {
         rope.setStartX(world.getCraneState().position);
         rope.setEndX(world.getCraneState().position + lineLenght * Math.sin(world.getCraneState().angle));
         rope.setEndY(lineLenght * (Math.cos(world.getCraneState().angle)));
-        System.out.println(rope.getEndY());
         rail.setStartX(-World.TRACK_LENGTH);
         rail.setEndX(World.TRACK_LENGTH);
-    };
-
-
+    }
 }

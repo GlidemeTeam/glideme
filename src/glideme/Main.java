@@ -15,11 +15,17 @@ public class Main extends Application {
      * The state of the world.
      */
     private static World world = new World();
-    private static MainWindow mainWindow = new MainWindow();;
+    private static MainWindow mainWindow = new MainWindow();
+
     /**
      * World-updating background task.
      */
     private static Thread worldThread;
+
+    /**
+     * Should world be running?
+     */
+    private static boolean worldRunning = false;
 
     /**
      * Spawn the main world-updating loop in a new thread.
@@ -29,7 +35,9 @@ public class Main extends Application {
             @Override
             public void run() {
                 while (true) {
-                    world.refresh();
+                    if (worldRunning) {
+                        world.refresh();
+                    }
 
                     try {
                         Thread.sleep(world.TIME_QUANTUM);
@@ -53,8 +61,8 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         mainWindow = new MainWindow(world);
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainWindow.fxml"));
 
         fxmlLoader.setRoot(mainWindow);
@@ -67,8 +75,13 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(mainWindow));
         primaryStage.setTitle("GlideMe");
         primaryStage.show();
+    }
 
-
+    /**
+     * Notify the world-updating thread that it can start processing.
+     */
+    public static void runWorld(final boolean run) {
+        worldRunning = run;
     }
 
     /**
@@ -80,7 +93,5 @@ public class Main extends Application {
         spawnWorldLoop();
 
         launch(args);
-      //  Platform.runLater(()->mainWindow.drawWindow(world));
-
     }
 }

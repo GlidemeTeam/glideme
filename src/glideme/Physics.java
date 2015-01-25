@@ -12,17 +12,22 @@ public class Physics {
     public static void update(World world) {
         final World.CraneState state = world.getCraneState();
 
-        double newPosition = state.position + state.velocity * (world.TIME_QUANTUM/1000.0);
-        if (newPosition > world.TRACK_LENGTH) {
-            newPosition = world.TRACK_LENGTH;
+        // Update current velocity given current acceleration.
+        double newVelocity = state.velocity + state.acceleration * World.TIME_QUANTUM;
+
+        // Update position given current velocity. Position's bounded by track's length.
+        double newPosition = state.position + newVelocity * World.TIME_QUANTUM;
+        if (newPosition > World.TRACK_LENGTH) {
+            newPosition = World.TRACK_LENGTH;
         }
         else if (newPosition < 0) {
             newPosition = 0;
         }
 
-        final double tangensAlpha = (state.velocity - state.prevVelocity) / (world.TIME_QUANTUM/1000.0) / 9.81;
+        // Calculate current angle - it depends on acceleration.
+        final double tangensAlpha = state.acceleration / (9.81/1000000.0);
         final double newAngle = Math.atan(tangensAlpha);
 
-        world.update(newPosition, null, newAngle);
+        world.update(newPosition, newVelocity, null, newAngle);
     }
 }
