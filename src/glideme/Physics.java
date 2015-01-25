@@ -5,6 +5,11 @@ package glideme;
  */
 public class Physics {
     /**
+     * Previous acceleration value.
+     */
+    private static double prevAcceleration = 0.0;
+
+    /**
      * Determine and set updated values of crane's position and angle.
      *
      * @param world - the world that's being updated.
@@ -24,10 +29,12 @@ public class Physics {
             newPosition = 0;
         }
 
-        // Calculate current angle - it depends on acceleration.
-        final double tangensAlpha = state.acceleration / (9.81/1000000.0);
-        final double newAngle = Math.atan(tangensAlpha);
+        // Calculate current angle change - it depends on acceleration.
+        final double tangensAlpha = (prevAcceleration - state.acceleration) / (9.81/6000.0);
+        final double newAngle = state.angle + Math.atan(tangensAlpha);
 
         world.update(newPosition, newVelocity, null, newAngle);
+
+        prevAcceleration = state.acceleration;
     }
 }

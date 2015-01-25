@@ -81,7 +81,7 @@ public class World {
      * Determine updated values of physical quantities for current time quantum.
      */
     public void refresh() {
-        System.out.printf("d=%f, v=%f, acc=%f, a=%f\n", craneState.position, craneState.velocity, craneState.acceleration, craneState.angle);
+        System.out.printf("dest=%f, d=%f, v=%f, acc=%f, a=%f\n", destPoint, craneState.position, craneState.velocity, craneState.acceleration, craneState.angle);
 
         Physics.update(this);
         Regulator.update(this);
@@ -104,9 +104,6 @@ public class World {
      */
     synchronized
     public void update(Double newPosition, Double newVelocity, Double newAcceleration, Double newAngle) {
-        // If velocity is being updated, store a new acceleration value.
-        // Otherwise don't change it.
-
         if (newPosition == null)
         {
             newPosition = craneState.position;

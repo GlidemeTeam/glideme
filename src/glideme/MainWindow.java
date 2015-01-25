@@ -110,11 +110,8 @@ public class MainWindow extends VBox implements Initializable {
             public void handle(MouseEvent event) {
                 if(task != null && !task.isCancelled()) {
                     double x = event.getSceneX();
-                    if (x < rail.getStartX()) {
-                        x = rail.getStartX();
-                    }
-                    else if (x > rail.getEndX()) {
-                        x = rail.getEndX();
+                    if (x > railLength) {
+                        x = railLength;
                     }
 
                     world.setDestination((x/railLength) * (double)World.TRACK_LENGTH);
