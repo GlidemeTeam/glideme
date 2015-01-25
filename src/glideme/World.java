@@ -75,7 +75,7 @@ public class World {
      * Crane's destination point (as a distance in units from the track's start).
      * At the beginning it's always where the crane starts.
      */
-    private int destPoint = 70;
+    private double destPoint = 50.0;
 
     /**
      * Determine updated values of physical quantities for current time quantum.
@@ -135,8 +135,9 @@ public class World {
      * Change the crane's destination point.
      */
     synchronized
-    public void setDestination(final int newDestination) {
-        assert(newDestination >= 0);
+    public void setDestination(final double newDestination) {
+        assert(newDestination >= 0.0);
+        assert(newDestination <= TRACK_LENGTH);
 
         destPoint = newDestination;
     }
@@ -153,7 +154,7 @@ public class World {
      * Get current destination point.
      */
     synchronized
-    public int getDestination() {
+    public double getDestination() {
         return destPoint;
     }
 }

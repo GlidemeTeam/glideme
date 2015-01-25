@@ -20,14 +20,14 @@ public class Regulator {
         AN = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -Math.PI/2.0, -Math.PI/12.0, 0.0),
         AZ = new FuzzySet(FuzzySet.MembershipType.Pyramidal, -Math.PI/12.0, 0.0, Math.PI/12.0),
         AP = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, Math.PI/12.0, Math.PI/2.0),
-        VN = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -1.0/6000.0, -0.5/6000.0, 0.0),
-        VZ = new FuzzySet(FuzzySet.MembershipType.Pyramidal, -0.5/6000.0, 0.0, 0.5/6000.0),
-        VP = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, 0.5/6000.0, 1.0/6000.0);
+        VN = new FuzzySet(FuzzySet.MembershipType.FallingSlope, -1.0/6.0, -0.5/6.0, 0.0),
+        VZ = new FuzzySet(FuzzySet.MembershipType.Pyramidal, -0.5/6.0, 0.0, 0.5/6.0),
+        VP = new FuzzySet(FuzzySet.MembershipType.RisingSlope, 0.0, 0.5/6.0, 1.0/6.0);
 
     /**
      * Minimal acceleration time modifier in milliseconds.
      */
-    private static final double MIN_ACCEL_TIME = 50.0;
+    private static final double MIN_ACCEL_TIME = 30.0;
 
     /**
      * Calculate the maximum among the given values.
@@ -159,7 +159,7 @@ public class Regulator {
         World.CraneState inputState = world.getCraneState();
 
         // Fuzzification:
-        double[] distMship = fuzzify((double)world.getDestination() - inputState.position, DN, DZ, DP);
+        double[] distMship = fuzzify(world.getDestination() - inputState.position, DN, DZ, DP);
         double[] angleMship = fuzzify(inputState.angle, AN, AZ, AP);
 
         // Reasoning:

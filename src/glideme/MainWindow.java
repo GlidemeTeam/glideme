@@ -46,7 +46,8 @@ public class MainWindow extends VBox implements Initializable {
 
     private Task task;
 
-    private int lineLenght;
+    private double lineLenght;
+    private double railLength;
 
     public MainWindow() {}
 
@@ -101,28 +102,42 @@ public class MainWindow extends VBox implements Initializable {
             }
         });
 
-        lineLenght=(int)(Math.abs(rope.getStartY())+Math.abs(rope.getEndY()));
+        lineLenght = Math.abs(rope.getStartY()) + Math.abs(rope.getEndY());
+        railLength = rail.getEndX() - rail.getStartX();
 
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(task!=null && !task.isCancelled()) {
-                    world.setDestination((int) (event.getSceneX() - 300)); //300 is a position of trolley - to change
+                if(task != null && !task.isCancelled()) {
+                    double x = event.getSceneX();
+                    if (x < rail.getStartX()) {
+                        x = rail.getStartX();
+                    }
+                    else if (x > rail.getEndX()) {
+                        x = rail.getEndX();
+                    }
 
+                    world.setDestination((x/railLength) * (double)World.TRACK_LENGTH);
                 }
             }
         });
     }
 
-    public void drawWindow(){
-        trolley.setX(world.getCraneState().position);
-        wheel.setCenterX(world.getCraneState().position);
-        weight.setCenterX(world.getCraneState().position+lineLenght*Math.sin(world.getCraneState().angle));
-        weight.setCenterY(-lineLenght * (1 - Math.cos(world.getCraneState().angle)));
-        rope.setStartX(world.getCraneState().position);
-        rope.setEndX(world.getCraneState().position + lineLenght * Math.sin(world.getCraneState().angle));
-        rope.setEndY(lineLenght * (Math.cos(world.getCraneState().angle)));
-        rail.setStartX(-World.TRACK_LENGTH);
-        rail.setEndX(World.TRACK_LENGTH);
+    public void drawWindow() {
+        final World.CraneState state = world.getCraneState();
+        final double pos = state.position,
+                angle = state.angle;
+
+        final double trolleyX = rail.getStartX() + (pos/World.TRACK_LENGTH)*railLength;
+
+        trolley.setX(trolleyX);
+        wheel.setCenterX(trolleyX);
+
+        weight.setCenterX(trolleyX + lineLenght * Math.sin(angle));
+        weight.setCenterY(-lineLenght * (1 - Math.cos(angle)));
+
+        rope.setStartX(trolleyX);
+        rope.setEndX(trolleyX + lineLenght * Math.sin(angle));
+        rope.setEndY(lineLenght * (Math.cos(angle)));
     }
 }
